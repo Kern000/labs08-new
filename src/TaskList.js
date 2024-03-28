@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import AddTaskForm from './AddTaskForm';
+import TaskItem from './Task';
 
 export default function TaskList(){
 
@@ -67,21 +69,28 @@ export default function TaskList(){
         return (
             tasks.map((task) => (
                 taskBeingEdited !== task.id ?
-                    (<li key={task.id}>
-                        {task.description}
-                        <input  type="checkbox"
-                                checked={task.done === true}
-                                onChange={()=> checkTask(task.id)}
-                                value={task.description === true}
-                        />
-                        <button onClick={()=> { 
-                                                setTaskBeingEdited(task.id); 
-                                                setModifiedTaskName(task.description)
-                                        }}                          
-                        > Edit </button>
-                        <button onClick={()=> deleteTask(task.id)}
-                        > Delete </button>
-                    </li>) : displayEditTask(task)
+                    // (<li key={task.id}>
+                    //     {task.description}
+                    //     <input  type="checkbox"
+                    //             checked={task.done === true}
+                    //             onChange={()=> checkTask(task.id)}
+                    //             value={task.description === true}
+                    //     />
+                    //     <button onClick={()=> { 
+                    //                             setTaskBeingEdited(task.id); 
+                    //                             setModifiedTaskName(task.description)
+                    //                     }}                          
+                    //     > Edit </button>
+                    //     <button onClick={()=> deleteTask(task.id)}
+                    //     > Delete </button>
+                    // </li>)
+                    <TaskItem   task={task}
+                                checkTask={checkTask}
+                                setTaskBeingEdited={setTaskBeingEdited}
+                                setModifiedTaskName={setModifiedTaskName}
+                                deleteTask={deleteTask}
+                    /> 
+                    : displayEditTask(task)
                 )
             )
         )
@@ -125,17 +134,10 @@ export default function TaskList(){
                     tasks ? displayTask(tasks) : <p> Loading </p>
                 }
             </ul>
-            <h2> Create new task </h2>
-            <div>
-                <label> Task Desription </label>
-                <input  type="text" 
-                        name="newTaskName" 
-                        value={newTask}
-                        onChange={(event)=> setNewTask(event.target.value)}
-                        />
-                <button onClick={addTask}> Add </button>
-                <p> "This is new Task State: " </p>
-            </div>
+            <AddTaskForm    newTask={newTask}
+                            setNewTask={setNewTask}
+                            addTask={addTask}
+            />
         </React.Fragment>
     )
 }
